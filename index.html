@@ -10,17 +10,10 @@
     <div class="container">
         <h1>🎙️ AI-Transcriber - Convert Speech to Text</h1>
         
-        <form id="uploadForm" action="/transcribe" method="POST" enctype="multipart/form-data">
+        <form id="uploadForm" action="http://127.0.0.1:5000/transcribe" method="POST" enctype="multipart/form-data">
             <label for="audioFile">📂 Upload an Audio File:</label>
-            <input type="file" id="audioFile" name="audioFile" accept=".mp3, .wav, .ogg" required>
+            <input type="file" id="audioFile" name="file" accept=".mp3, .wav, .ogg" required>
             
-            <label for="language">🌍 Select Language:</label>
-            <select id="language" name="language">
-                <option value="en">English</option>
-                <option value="hi">Hindi</option>
-                <option value="es">Spanish</option>
-            </select>
-
             <button type="submit">🚀 Transcribe</button>
         </form>
 
@@ -29,12 +22,12 @@
         </div>
 
         <div id="result"></div>
-    </div>
 
-    <script>
-        document.getElementById("uploadForm").addEventListener("submit", function() {
-            document.getElementById("loading").style.display = "block";
-        });
-    </script>
+        <script>
+            document.getElementById("uploadForm").addEventListener("submit", function(event) {
+                document.getElementById("loading").style.display = "block";
+            });
+        </script>
+    </div>
 </body>
 </html>
