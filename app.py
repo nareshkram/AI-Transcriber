@@ -2,6 +2,10 @@ from flask import Flask, request, jsonify, send_from_directory
 import os
 from werkzeug.utils import secure_filename
 import speech_recognition as sr  # स्पीच रिकॉग्निशन लाइब्रेरी
+import os
+import speech_recognition as sr
+from pydub import AudioSegment
+
 
 app = Flask(__name__)
 
@@ -100,3 +104,28 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)
+def transcribe_audio(file_path):
+    """ MP3 ऑडियो को टेक्स्ट में बदलें """
+    recognizer = sr.Recognizer()
+
+    # MP3 ऑडियो को WAV में कन्वर्ट करें (लेकिन फाइल सेव नहीं होगी)
+    audio = AudioSegment.from_file(file_path, format="mp3")
+    wav_path = file_path.replace(".mp3", ".wav")
+    audio.export(wav_path, format="wav")
+
+    with sr.AudioFile(wav_path) as source:
+        audio_data = recognizer.record(source)
+
+    try:
+        text = recognizer.recognize_google(audio_data)
+        return text
+    except sr.UnknownValueError:
+        return "Could not understand audio"
+    except sr.RequestError as e:
+        return f"Error with the speech recognition service: {e}"
+from pydub.utils import which  
+import os  
+
+# FFmpeg का पाथ सेट करें
+os.environ["FFMPEG_BINARY"] = which("ffmpeg")
+os.environ["FFPROBE_BINARY"] = which("ffprobe")
