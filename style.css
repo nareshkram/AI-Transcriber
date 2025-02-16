@@ -1,10 +1,62 @@
+/* 🌐 General Styles */
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin-top: 50px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
-body {
-    font-family: Arial, sans-serif;
+
+/* 📦 Container */
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 500px;
     text-align: center;
-    margin-top: 50px;
+}
+
+/* 🎙️ File Upload */
+input[type="file"] {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+}
+
+/* 🚀 Button Styles */
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* ⏳ Loading Indicator */
+#loading {
+    display: none;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #ff9800;
+}
+
+/* 📝 Transcription Result */
+#result {
+    margin-top: 15px;
+    padding: 10px;
+    background: #e8f5e9;
+    border-radius: 5px;
+    font-weight: bold;
 }

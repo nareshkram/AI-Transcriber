@@ -1,17 +1,40 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Voice Transcriber</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>AI-Transcriber</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>AI Video to Audio Transcription</h1>
-    <input type="file" id="videoUpload" accept="video/*">
-    <button onclick="processVideo()">Upload & Transcribe</button>
-    <p id="result"></p>
+    <div class="container">
+        <h1>🎙️ AI-Transcriber - Convert Speech to Text</h1>
+        
+        <form id="uploadForm" action="/transcribe" method="POST" enctype="multipart/form-data">
+            <label for="audioFile">📂 Upload an Audio File:</label>
+            <input type="file" id="audioFile" name="audioFile" accept=".mp3, .wav, .ogg" required>
+            
+            <label for="language">🌍 Select Language:</label>
+            <select id="language" name="language">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="es">Spanish</option>
+            </select>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+            <button type="submit">🚀 Transcribe</button>
+        </form>
+
+        <div id="loading" style="display: none;">
+            ⏳ Processing... Please wait.
+        </div>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function() {
+            document.getElementById("loading").style.display = "block";
+        });
+    </script>
 </body>
 </html>

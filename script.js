@@ -1,31 +1,40 @@
-async function processVideo() {
-    let fileInput = document.getElementById('videoUpload');
-    if (fileInput.files.length === 0) {
-        alert("Please upload a video file first.");
-        return;
-    }
+document.addEventListener("DOMContentLoaded", function () {
+    const uploadForm = document.getElementById("uploadForm");
+    const fileInput = document.getElementById("audioFile");
+    const resultDiv = document.getElementById("result");
+    const loadingIndicator = document.getElementById("loading");
 
-    let formData = new FormData();
-    formData.append("file", fileInput.files[0]);
+    uploadForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        
+        if (!fileInput.files.length) {
+            alert("⚠️ कृपया एक ऑडियो फ़ाइल चुनें!");
+            return;
+        }
 
-    let response = await fetch("/transcribe", {
-        method: "POST",
-        body: formData
+        loadingIndicator.style.display = "block";
+        resultDiv.innerHTML = "";
+
+        const formData = new FormData();
+        formData.append("audioFile", fileInput.files[0]);
+
+        try {
+            const response = await fetch("/transcribe", {
+                method: "POST",
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`🚨 Server Error: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            loadingIndicator.style.display = "none";
+            resultDiv.innerHTML = `<h3>📄 Transcription Result:</h3><p>${data.transcription}</p>`;
+        } catch (error) {
+            loadingIndicator.style.display = "none";
+            resultDiv.innerHTML = `<p style="color: red;">❌ ${error.message}</p>`;
+            console.error("Error:", error);
+        }
     });
-
-    let data = await response.json();
-    document.getElementById('result').innerText = data.text;
-}
-document.getElementById("uploadButton").addEventListener("click", function() {
-    let fileInput = document.getElementById("fileInput");
-    let formData = new FormData();
-    formData.append("file", fileInput.files[0]);
-
-    fetch("http://127.0.0.1:5000/api/upload", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error("Error:", error));
 });
