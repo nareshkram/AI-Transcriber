@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 import os
 from werkzeug.utils import secure_filename
+import speech_recognition as sr  # स्पीच रिकॉग्निशन लाइब्रेरी
 
 app = Flask(__name__)
 
@@ -19,6 +20,13 @@ def allowed_file(filename):
     """ चेक करें कि फ़ाइल का एक्सटेंशन वैध है या नहीं """
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def check_file_size(file):
+    """ 📌 फाइल साइज 1GB से ज्यादा नहीं होनी चाहिए """
+    file.seek(0, os.SEEK_END)
+    file_size = file.tell()
+    file.seek(0)
+    return file_size <= 1024 * 1024 * 1024  # 1GB
+
 @app.route("/upload", methods=["POST"])
 def upload_file():
     """ 🔹 फाइल अपलोड करने के लिए सुरक्षित API """
@@ -32,6 +40,9 @@ def upload_file():
 
     if not allowed_file(file.filename):
         return jsonify({"error": "Invalid file type. Allowed formats: MP3, WAV, OGG, FLAC, M4A"}), 400
+
+    if not check_file_size(file):
+        return jsonify({"error": "File too large! Max allowed size is 1GB"}), 400
 
     filename = secure_filename(file.filename)
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -50,6 +61,37 @@ def download_file(filename):
         return send_from_directory(app.config["UPLOAD_FOLDER"], filename, as_attachment=True)
     except Exception as e:
         return jsonify({"error": f"File not found: {str(e)}"}), 404
+
+@app.route("/transcribe", methods=["POST"])
+def transcribe_audio():
+    """ 🔹 अपलोड की गई ऑडियो फाइल को ट्रांसक्राइब करें """
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    file = request.files["file"]
+
+    if file.filename == "":
+        return jsonify({"error": "No selected file"}), 400
+
+    if not allowed_file(file.filename):
+        return jsonify({"error": "Invalid file format"}), 400
+
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    file.save(file_path)  # फाइल को सेव करें
+
+    # 🎙️ **स्पीच रिकॉग्निशन का उपयोग करके ऑडियो को टेक्स्ट में बदलें**
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(file_path) as source:
+        audio_data = recognizer.record(source)
+        try:
+            text = recognizer.recognize_google(audio_data, language="en-US")
+            return jsonify({"message": "Transcription successful", "text": text})
+        except sr.UnknownValueError:
+            return jsonify({"error": "Could not understand the audio"}), 400
+        except sr.RequestError:
+            return jsonify({"error": "Speech recognition service unavailable"}), 500
 
 @app.route("/")
 def index():
