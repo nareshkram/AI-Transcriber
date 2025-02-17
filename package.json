@@ -1,0 +1,23 @@
+{
+  "name": "ai-transcriber",
+  "version": "1.0.0",
+  "description": "## 📝 Project Overview AI-Transcriber is an advanced AI-powered website that provides high-accuracy speech-to-text conversion. Designed to handle multiple languages and diverse audio formats, this tool integrates state-of-the-art AI models to deliver efficient and precise transcription services. The platform is built to serve a variety of users, from content creators to businesses needing automated transcription.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nareshkram/AI-Transcriber.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nareshkram/AI-Transcriber/issues"
+  },
+  "homepage": "https://github.com/nareshkram/AI-Transcriber#readme",
+  "dependencies": {
+    "axios": "^1.7.9"
+  }
+}
