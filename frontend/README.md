@@ -12,20 +12,38 @@ AI Transcriber Frontend एक आधुनिक और रिस्पॉन�
 
 ## 📂 Project Structure
 ```
-frontend/
-│── node_modules/              # सभी dependencies
-│── public/                    # Static Files (HTML, CSS, JS)
-│   ├── js/
-│   │   └── script.js          # फ्रंटएंड लॉजिक
-│   └── index.html             # मेन HTML फाइल
-│── src/                       # React Source Code
-│   ├── App.css
-│   ├── App.js
-│   ├── index.js
-│   └── reportWebVitals.js
-│── package.json               # Node.js Project File
-│── package-lock.json          # Package Lock
-│── README.md                  # यह डॉक्यूमेंट
+AI-Transcriber/
+│
+├── frontend/                     # React Frontend Code
+│   ├── node_modules/             # Node.js Modules
+│   ├── public/                   # Static Files (HTML, CSS, JS)
+│   ├── src/                      # React Source Code
+│   ├── package.json              
+│   ├── package-lock.json         
+│   └── README.md                 
+│
+├── backend/                      # Flask Backend Code
+│   ├── uploads/                  # Folder to store uploaded audio files
+│   ├── routes/                   # API Routes
+│   │   ├── transcribe.py         # Speech-to-Text API
+│   │   ├── tts.py                # Text-to-Speech API
+│   ├── static/                   # Static Files (if needed)
+│   ├── templates/                # HTML Templates (if using Jinja)
+│   ├── venv/                     # Python Virtual Environment
+│   ├── app.py                    # Main Flask App
+│   ├── requirements.txt          # Python Dependencies
+│   └── README.md                 
+│
+├── test_data/                     # Sample Data for Testing
+│   ├── fixed_audio.wav           
+│   ├── generated_audio.mp3       
+│   ├── generated_audio.wav       
+│   ├── uploaded_audio.wav        
+│   └── output.mp3                
+│
+├── .gitignore                     
+└── README.md                      
+
 ```
 
 ## 🚀 Installation & Setup
